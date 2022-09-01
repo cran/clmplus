@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Gabriele Pittarello" />
+
+<meta name="date" content="2022-08-31" />
+
+<title>Case study part 1</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Case study part 1</h1>
+<h4 class="author">Gabriele Pittarello</h4>
+<h4 class="date">2022-08-31</h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The <code>clmplus</code> package provides practitioners with a fast
+and user friendly implementation of the modeling framework we derived in
+our paper .</p>
+<p>We were able to connect the well-known hazard models developed in
+life insurance to non-life run-off triangles claims development. The
+flexibility of this approach goes beyond the methodological novelty: we
+hope to provide a user-friendly set of tools based on the point of
+contact between non-life insurance and life insurance in the actuarial
+science.</p>
+<p>This vignette is organized as follows:</p>
+<ul>
+<li><p>We show the connection between the age-period representation and
+run-off triangles.</p></li>
+<li><p>We replicate the chain ladder within our modeling framework. As
+shown in the paper, by using the <code>clmplus</code> approach the
+resulting model is saving some parameters with respect to the standard
+GLM approach.</p></li>
+<li><p>We show an example were adding a cohort effect can lead to an
+improvement on the model fit.</p></li>
+</ul>
+<p>In this tutorial, we show an example on the <code>AutoBIPaid</code>
+run-off triangle from the <code>ChainLadder</code> package.</p>
+<div id="one-discipline-one-language" class="section level2">
+<h2>One discipline, one language</h2>
+<p>Consider the data set we chose for this tutorial.</p>
+<p>The run-off triangle representation is displayed below:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ChainLadder)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;AutoBI&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dataset<span class="ot">=</span>AutoBI<span class="sc">$</span>AutoBIPaid </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dataset</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 1904 5398  7496  8882  9712 10071 10199 10256</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] 2235 6261  8691 10443 11346 11754 12031    NA</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,] 2441 7348 10662 12655 13748 14235    NA    NA</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,] 2503 8173 11810 14176 15383    NA    NA    NA</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] 2838 8712 12728 15278    NA    NA    NA    NA</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,] 2405 7858 11771    NA    NA    NA    NA    NA</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,] 2759 9182    NA    NA    NA    NA    NA    NA</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,] 2801   NA    NA    NA    NA    NA    NA    NA</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dataset)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(<span class="fu">dim</span>(dataset)[<span class="dv">1</span>]<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(dataset)<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(<span class="fu">dim</span>(dataset)[<span class="dv">1</span>]<span class="sc">-</span><span class="dv">1</span>))</span></code></pre></div>
+<p>Practitioners in general insurance refer to the x axis of this
+representation as <strong>development years</strong>. Similarly, the y
+axis is called <strong>accident years</strong>. The third dimension that
+matters is the diagonals: the <strong>calendar years</strong>. There is
+a one-to-one correspondence between the age-period representation and
+run-off triangles. In notional terms, life insurance actuaries use the
+following terminology:</p>
+<ul>
+<li><p><strong>ages</strong> are <strong>development
+years</strong>.</p></li>
+<li><p><strong>cohorts</strong> are <strong>accident
+years</strong>.</p></li>
+<li><p><strong>periods</strong> is <strong>calendar
+years</strong>.</p></li>
+</ul>
+<p>Indeed, the age-period representation of the run-off triangle is the
+following:</p>
+<pre><code>#&gt;      [,1] [,2] [,3] [,4]  [,5]  [,6]  [,7]  [,8]
+#&gt; [1,] 1904 2235 2441 2503  2838  2405  2759  2801
+#&gt; [2,]   NA 5398 6261 7348  8173  8712  7858  9182
+#&gt; [3,]   NA   NA 7496 8691 10662 11810 12728 11771
+#&gt; [4,]   NA   NA   NA 8882 10443 12655 14176 15278
+#&gt; [5,]   NA   NA   NA   NA  9712 11346 13748 15383
+#&gt; [6,]   NA   NA   NA   NA    NA 10071 11754 14235
+#&gt; [7,]   NA   NA   NA   NA    NA    NA 10199 12031
+#&gt; [8,]   NA   NA   NA   NA    NA    NA    NA 10256</code></pre>
+<p>Observe that the y axis is now the <strong>development years</strong>
+(or <strong>age</strong>) component.</p>
+<p><strong>Calendar years</strong> (or <strong>periods</strong>) are
+displayed on the x axis.</p>
+<p><strong>Accident years</strong> (or <strong>cohorts</strong>) are on
+the diagonals.</p>
+</div>
+</div>
+<div id="replicate-the-chain-ladder-with-the-clmplus-package" class="section level1">
+<h1>Replicate the chain-ladder with the <code>clmplus</code>
+package</h1>
+<p>Our package is an out of the box set of tools to compute the claims
+reserve. We now show how to replicate the chain ladder model. Observe
+the run-off triangle data structure first needs to be initialized to a
+<code>RtTriangle</code> object.</p>
+<p>Starting from the results in the paper we showed how to replicate the
+chain ladder with an age model. The computation on the
+<code>RtTriangle</code> object is computed with the method
+<code>clmplus</code> specifying an hazard model.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a.model<span class="ot">=</span><span class="fu">clmplus</span>(<span class="at">RtTriangle =</span>  rtt, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">hazard.model =</span> <span class="st">&quot;a&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: The following cohorts have been zero weighted: -7 -6 -5 -4 -3 -2 -1 </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Start fitting with gnm</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Finish fitting with gnm</span></span></code></pre></div>
+<p>We show the consistency of our approach by comparing our estimates
+with those obtained with the Mack chain ladder method as implemented in
+the <code>ChainLadder</code> package.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mck.chl <span class="ot">&lt;-</span> <span class="fu">MackChainLadder</span>(dataset)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ultimate.chl<span class="ot">=</span>mck.chl<span class="sc">$</span>FullTriangle[,<span class="fu">dim</span>(mck.chl<span class="sc">$</span>FullTriangle)[<span class="dv">2</span>]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>diagonal<span class="ot">=</span><span class="fu">rev</span>(<span class="fu">t2c</span>(mck.chl<span class="sc">$</span>FullTriangle)[,<span class="fu">dim</span>(mck.chl<span class="sc">$</span>FullTriangle)[<span class="dv">2</span>]])</span></code></pre></div>
+<p>Estimates are gathered in a <code>data.frame</code> to ease the
+understanding.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">ultimate.cost.mack=</span>ultimate.chl,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">ultimate.cost.fchl=</span>a.model<span class="sc">$</span>ultimate.cost,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">reserve.mack=</span>ultimate.chl<span class="sc">-</span>diagonal,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">reserve.fchl=</span>a.model<span class="sc">$</span>reserve</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ultimate.cost.mack ultimate.cost.fchl reserve.mack reserve.fchl</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0           10256.00           10256.00      0.00000      0.00000</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1           12098.24           12098.24     67.23865     67.23865</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2           14580.19           14580.19    345.18727    345.18727</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3           16323.69           16323.69    940.68770    940.68770</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           17628.86           17628.86   2350.85562   2350.85562</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5           16237.77           16237.77   4466.77443   4466.77443</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6           18285.24           18285.24   9103.24335   9103.24335</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7           17281.44           17281.44  14480.43832  14480.43832</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st"> Total reserve:&#39;</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(a.model<span class="sc">$</span>reserve))</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Total reserve: 31754.43</span></span></code></pre></div>
+<div id="claims-reserving-with-glms-compared-to-hazard-models" class="section level2">
+<h2>Claims reserving with GLMs compared to hazard models</h2>
+<p>We fit the standard GLM model with the <code>apc</code> package. As
+shown in the paper the chain-ladder model can be replicated by fitting
+an age-cohort model.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(apc)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ds.apc <span class="ot">=</span> <span class="fu">apc.data.list</span>(<span class="fu">cum2incr</span>(dataset),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data.format =</span> <span class="st">&quot;CL&quot;</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ac.model.apc <span class="ot">=</span> <span class="fu">apc.fit.model</span>(ds.apc,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.family =</span> <span class="st">&quot;od.poisson.response&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.design =</span> <span class="st">&quot;AC&quot;</span>)</span></code></pre></div>
+<p>Inspect the model coefficients derived from the output:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ac.model.apc<span class="sc">$</span>coefficients.canonical[,<span class="st">&#39;Estimate&#39;</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        level    age slope cohort slope     DD_age_3     DD_age_4     DD_age_5 </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   7.41596168   0.74105900   0.16519698  -1.16411707  -0.02909890  -0.17467013 </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     DD_age_6     DD_age_7     DD_age_8  DD_cohort_3  DD_cohort_4  DD_cohort_5 </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -0.17533888   0.17408744  -0.55360421   0.02140672  -0.07364998  -0.03603392 </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  DD_cohort_6  DD_cohort_7  DD_cohort_8 </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -0.15911660   0.20095088  -0.17521544</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ac.fcst.apc <span class="ot">=</span> <span class="fu">apc.forecast.ac</span>(ac.model.apc)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">reserve.mack=</span>ultimate.chl<span class="sc">-</span>diagonal,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">reserve.apc=</span><span class="fu">c</span>(<span class="dv">0</span>,ac.fcst.apc<span class="sc">$</span>response.forecast.coh[,<span class="st">&#39;forecast&#39;</span>]),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">reserve.fchl=</span>a.model<span class="sc">$</span>reserve</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   reserve.mack reserve.apc reserve.fchl</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0      0.00000     0.00000      0.00000</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     67.23865    67.23865     67.23865</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    345.18727   345.18727    345.18727</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    940.68770   940.68770    940.68770</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   2350.85562  2350.85562   2350.85562</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   4466.77443  4466.77443   4466.77443</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   9103.24335  9103.24335   9103.24335</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7  14480.43832 14480.43832  14480.43832</span></span></code></pre></div>
+<p>Our method is able to replicate the chain-ladder results with no need
+to add the cohort component.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a.model<span class="sc">$</span>model.fit<span class="sc">$</span>ax</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           1           2           3           4           5           6 </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.69314718  0.02366899 -1.01313612 -1.72538123 -2.48027780 -3.34130515 </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           7           8 </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -3.99615988 -5.18978418</span></span></code></pre></div>
+<p>Further inspection can be performed with the <code>fchl</code>
+package, which provides the graphical tools to inspect the fitted
+effects. Observe we model the rate in continuous time, the choice of a
+line plot is then consistent.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p.a<span class="ot">=</span><span class="fu">plot</span>(a.model)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --><img src="data:image/png;base64,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" /><!-- -->
+# The benefitial effect of adding the cohort component</p>
+<p>It is straightforward to state that from the statistical perspective
+it is desirable to have a model with less parameters. Nevertheless, our
+approach goes far beyond that.</p>
+<p>By adding the cohort effect we are able to improve our modeling.</p>
+<p>We show these results by inspecting the residuals plots.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make it triangular</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotresiduals</span>(a.model)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Clearly, the red and blue areas suggest some trends that the model
+wasn’t able to catch. Consider now the age-cohort model and its
+residuals plot.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ac.model <span class="ot">&lt;-</span> <span class="fu">clmplus</span>(rtt, <span class="at">hazard.model=</span><span class="st">&quot;ac&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: The following cohorts have been zero weighted: -7 -6 -5 -4 -3 -2 -1 </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Start fitting with gnm</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Finish fitting with gnm</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotresiduals</span>(ac.model)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>With no need of extrapolating a period component, we were able to
+improve the fit already. Similarly, it is possible to add a period
+component and choose an age-period model or an age-period-cohort
+model.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ap.model <span class="ot">=</span> <span class="fu">clmplus</span>(rtt,<span class="at">hazard.model =</span> <span class="st">&quot;ap&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: The following cohorts have been zero weighted: -7 -6 -5 -4 -3 -2 -1 </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Start fitting with gnm</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Finish fitting with gnm</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>apc.model <span class="ot">=</span> <span class="fu">clmplus</span>(rtt,<span class="at">hazard.model =</span> <span class="st">&quot;apc&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: The following cohorts have been zero weighted: -7 -6 -5 -4 -3 -2 -1 </span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Start fitting with gnm</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; StMoMo: Finish fitting with gnm</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotresiduals</span>(ap.model)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- -->
+It can be seen that the age-period model does not suggest any serious
+improvement from the age-cohort model. It is worth noticing one more
+time that the age-cohort model does not require any extrapolation. In a
+similar fashion, we plot the age-period-cohort model below, which seems
+to lead us to a small improvement.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotresiduals</span>(apc.model)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<p>In this vignette we wanted to show the flexibility of our modeling
+approach with respect to the well-known chain-ladder model.</p>
+<ul>
+<li><p>By modeling the hazard rate we are able to replicate the
+chain-ladder results with less parameters. Indeed, we model the age
+component directly and add a cohort effect if needed.</p></li>
+<li><p>Going from an age model to an age-cohort model may lead to a
+serious improvement in the model results.</p></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Gabriele Pittarello" />
+
+<meta name="date" content="2022-08-31" />
+
+<title>Models comparison</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Models comparison</h1>
+<h4 class="author">Gabriele Pittarello</h4>
+<h4 class="date">2022-08-31</h4>
+
+
+
+<p>The <code>clmplus</code> package was created to provide actuarial
+scientists the tool-box that we illustrate in our theoretical paper.
+This vignette is made to make the readers able to recreate the type of
+analysis we make in the data application section of our paper. We
+believe it is extremely important to provide this vignette to disclose
+to the public the code we used to perform our analysis. Our results can
+be replicated by just running this vignette with the following seed.
+This vignette is organized as follows:</p>
+<ul>
+<li><p>In the bake-off section we provide numerical results to compare
+<code>clmplus</code> models performances to the <code>apc</code> package
+models performances on the test set.</p></li>
+<li><p>In the rankings section we try to rank <code>clmplus</code>
+models and the <code>apc</code> package models based on their
+performances on the validation set.</p></li>
+</ul>
+<p>During the analysis we suggest how practitioners should split the
+data in order to perform the studies we just described.</p>
+<p>For the case study in the paper we want to make our analysis as close
+as possible to a real life reserving problem. In order to do so, we
+decided to select 30 data sets available to the public from the R
+packages <code>clmplus</code>, <code>ChainLadder</code>,
+<code>apc</code> and <code>CASdatasets</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>list.of.datasets <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">GenIns=</span>GenIns,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sifa.mod=</span>sifa.mod,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">sifa.gtpl=</span>sifa.gtpl,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sifa.mtpl=</span>sifa.mtpl,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">amases.gtpl=</span>amases.gtpl,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">amases.mod=</span>amases.mod,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">amases.mtpl=</span>amases.mtpl,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bz =</span> <span class="fu">incr2cum</span>(<span class="fu">data.loss.BZ</span>()<span class="sc">$</span>response),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ta =</span> <span class="fu">incr2cum</span>(<span class="fu">data.loss.TA</span>()<span class="sc">$</span>response),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">xl =</span> <span class="fu">incr2cum</span>(<span class="fu">data.loss.XL</span>()<span class="sc">$</span>response),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">vnj =</span> <span class="fu">incr2cum</span>(<span class="fu">data.loss.VNJ</span>()<span class="sc">$</span>response),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">abc=</span>ABC,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">autoC=</span> auto<span class="sc">$</span>CommercialAutoPaid,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">autoP =</span> auto<span class="sc">$</span>PersonalAutoPaid,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">autoBI =</span> AutoBI<span class="sc">$</span>AutoBIPaid,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">mclpaid=</span> MCLpaid,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">medmal=</span>MedMal<span class="sc">$</span>MedMalPaid,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">mortgage=</span>Mortgage,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">mw08=</span>MW2008,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">mw14=</span>MW2014, </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">ukmotor =</span> UKMotor,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">usapaid=</span>USAApaid</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div id="bake-off" class="section level1">
+<h1>Bake-off</h1>
+<p>Within this section we provide the code to measure the models
+extrapolation accuracy. In order to do so, we need to coherently split
+the data set into training, validation and testing. We show an example
+for a 12x12 run-off triangle.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>J<span class="ot">=</span><span class="dv">12</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">expand.grid</span>(<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(J<span class="dv">-1</span>)),<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(J<span class="dv">-1</span>))),<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;origin&quot;</span>,<span class="st">&quot;dev&quot;</span>,<span class="st">&quot;value&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">==</span>(J<span class="dv">-1</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">3</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">&lt;</span>(J<span class="dv">-2</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">==</span>(J<span class="dv">-2</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">2</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">&gt;=</span>J]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#nas in the lower</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df[J,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df[J<span class="dv">-1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">+</span>J<span class="dv">-1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">*</span>J<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">*</span>J<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#nas in the upper tail</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">*</span>J<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1-12</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">*</span>J<span class="sc">-</span>J<span class="sc">+</span><span class="dv">2-12</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.integer</span>(dev), <span class="at">y=</span><span class="fu">as.integer</span>(origin))) <span class="sc">+</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">as.factor</span>(value),<span class="at">color=</span><span class="st">&quot;#000000&quot;</span>))<span class="sc">+</span><span class="fu">scale_y_reverse</span>()<span class="sc">+</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;royalblue&quot;</span>, <span class="st">&quot;darkred&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>,<span class="st">&quot;white&quot;</span>),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.value =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Train&quot;</span>,<span class="st">&quot;Validation&quot;</span>,<span class="st">&quot;Test&quot;</span>,<span class="st">&quot;&quot;</span>))<span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Development year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Accident year&quot;</span>,<span class="at">fill=</span><span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>), <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">7</span>))<span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>), <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">7</span>))<span class="sc">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">guide =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Train, validation and test split we adopted in the
+bake-off section.</p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>best.of.the.bests <span class="ot">&lt;-</span> <span class="cf">function</span>(df1,df2){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">  Util to turn character columns values into numeric.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  df1<span class="ot">=</span><span class="fu">apply</span>(df1,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">FUN=</span>as.numeric)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  df2<span class="ot">=</span><span class="fu">apply</span>(df2,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">FUN=</span>as.numeric)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  df3 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df1,df2)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  df3<span class="ot">=</span><span class="fu">apply</span>(df3,<span class="at">FUN=</span>abs.min,<span class="at">MARGIN =</span> <span class="dv">2</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df3)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>modelcomparison<span class="fl">.1</span>d <span class="ot">&lt;-</span> <span class="cf">function</span>(cumulative.payments.triangle){</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">  Function to compare the clmplus package age-period-cohort models with apc package age-period-cohort models  performances across different triangles.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">  This function takes a triangle of cumulative payments as input.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">  It returns the accuracy measures for the two families on the triangle.</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># function internal variables</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  leave.out<span class="ot">=</span><span class="dv">2</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  mae <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  error.pc <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  model.name <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  error.incidence <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  model.family <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  mre <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># data pre-precessing ----</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  J <span class="ot">&lt;-</span> <span class="fu">dim</span>(cumulative.payments.triangle)[<span class="dv">2</span>]</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  reduced.triangle <span class="ot">&lt;-</span> <span class="fu">c2t</span>(<span class="fu">t2c</span>(cumulative.payments.triangle)[<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out)])</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  newt.rtt <span class="ot">&lt;-</span> <span class="fu">RtTriangle</span>(reduced.triangle)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  newt.apc <span class="ot">&lt;-</span> <span class="fu">apc.data.list</span>(<span class="at">response=</span>newt.rtt<span class="sc">$</span>incremental.payments.triangle,</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data.format=</span><span class="st">&quot;CL&quot;</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="do">## stmomo -----</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  to.project <span class="ot">&lt;-</span> <span class="fu">t2c</span>(cumulative.payments.triangle)[<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out<span class="dv">-1</span>),J<span class="sc">-</span>leave.out]</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  true.values <span class="ot">&lt;-</span> <span class="fu">t2c</span>(cumulative.payments.triangle)[<span class="dv">2</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),(J<span class="sc">-</span>leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>J]</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(ix <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&#39;a&#39;</span>,<span class="st">&#39;ac&#39;</span>,<span class="st">&#39;ap&#39;</span>,<span class="st">&#39;apc&#39;</span>)){ <span class="do">##names(models)</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    hz.fit <span class="ot">&lt;-</span> StMoMo<span class="sc">::</span><span class="fu">fit</span>(models[[ix]], </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Dxt =</span> newt.rtt<span class="sc">$</span>occurrance, </span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Ext =</span> newt.rtt<span class="sc">$</span>exposure,</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>                          <span class="at">iterMax=</span><span class="fu">as.integer</span>(<span class="fl">1e+05</span>))</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    hz.rate <span class="ot">=</span> forecast<span class="sc">::</span><span class="fu">forecast</span>(hz.fit,<span class="at">h=</span>leave.out)<span class="sc">$</span>rates</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    J.new<span class="ot">=</span><span class="fu">dim</span>(reduced.triangle)[<span class="dv">2</span>]</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    fij <span class="ot">=</span> (<span class="dv">2</span><span class="sc">+</span>hz.rate)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">-</span>hz.rate)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    pred.mx <span class="ot">=</span> fij</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    pred.mx[,<span class="dv">1</span>]<span class="ot">=</span>fij[,<span class="dv">1</span>]<span class="sc">*</span><span class="fu">c</span>(<span class="cn">NA</span>,to.project)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    temp<span class="ot">=</span><span class="fu">unname</span>(pred.mx[<span class="dv">1</span><span class="sc">:</span>(J.new<span class="dv">-1</span>),<span class="dv">1</span>][<span class="sc">!</span><span class="fu">is.na</span>(pred.mx[<span class="dv">1</span><span class="sc">:</span>(J.new<span class="dv">-1</span>),<span class="dv">1</span>])])</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    pred.mx[,<span class="dv">2</span>]<span class="ot">=</span>fij[,<span class="dv">2</span>]<span class="sc">*</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="cn">NA</span>,J.new<span class="sc">-</span><span class="fu">length</span>(temp)),temp)</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    true.mx<span class="ot">=</span> <span class="fu">rbind</span>(<span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">2</span>),true.values)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this is meant to be NA</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    true.mx[<span class="dv">2</span>,<span class="dv">2</span>]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    sq.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    abs.errors <span class="ot">=</span> <span class="fu">abs</span>(pred.mx<span class="sc">-</span>true.mx)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">/</span>true.mx</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">apply</span>(pred.mx<span class="sc">-</span>true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T)</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">apply</span>(true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    model.name.ix <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">paste0</span>(ix,<span class="st">&quot;.val&quot;</span>),<span class="fu">paste0</span>(ix,<span class="st">&quot;.test&quot;</span>))</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,model.name.ix)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    model.family <span class="ot">=</span> <span class="fu">c</span>(model.family,<span class="fu">rep</span>(ix,<span class="dv">2</span>))</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    rmse <span class="ot">=</span> <span class="fu">c</span>(rmse,<span class="fu">sqrt</span>(<span class="fu">apply</span>(sq.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T)))</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    mae <span class="ot">=</span> <span class="fu">c</span>(mae,<span class="fu">apply</span>(abs.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">apply</span>(r.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    ix<span class="ot">=</span><span class="st">&#39;lc&#39;</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    hz.fit <span class="ot">&lt;-</span> <span class="fu">fit.lc.nr</span>(<span class="at">data.T =</span> newt.rtt)</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(hz.fit<span class="sc">$</span>converged<span class="sc">==</span><span class="cn">TRUE</span>){hz.rate <span class="ot">=</span> <span class="fu">forecast.lc.nr</span>(hz.fit,<span class="at">J=</span><span class="fu">dim</span>(newt.rtt<span class="sc">$</span>cumulative.payments.triangle)[<span class="dv">2</span>])<span class="sc">$</span>rates[,<span class="dv">1</span><span class="sc">:</span>leave.out]</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    J.new<span class="ot">=</span><span class="fu">dim</span>(reduced.triangle)[<span class="dv">2</span>]</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>    fij <span class="ot">=</span> (<span class="dv">2</span><span class="sc">+</span>hz.rate)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">-</span>hz.rate)</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    pred.mx <span class="ot">=</span> fij</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    pred.mx[,<span class="dv">1</span>]<span class="ot">=</span>fij[,<span class="dv">1</span>]<span class="sc">*</span><span class="fu">c</span>(<span class="cn">NA</span>,to.project)</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    temp<span class="ot">=</span><span class="fu">unname</span>(pred.mx[<span class="dv">1</span><span class="sc">:</span>(J.new<span class="dv">-1</span>),<span class="dv">1</span>][<span class="sc">!</span><span class="fu">is.na</span>(pred.mx[<span class="dv">1</span><span class="sc">:</span>(J.new<span class="dv">-1</span>),<span class="dv">1</span>])])</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    pred.mx[,<span class="dv">2</span>]<span class="ot">=</span>fij[,<span class="dv">2</span>]<span class="sc">*</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="cn">NA</span>,J.new<span class="sc">-</span><span class="fu">length</span>(temp)),temp)</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    true.mx<span class="ot">=</span> <span class="fu">rbind</span>(<span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">2</span>),true.values)</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this is meant to be NA</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    true.mx[<span class="dv">2</span>,<span class="dv">2</span>]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>    sq.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    abs.errors <span class="ot">=</span> <span class="fu">abs</span>(pred.mx<span class="sc">-</span>true.mx)</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">/</span>true.mx</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">apply</span>(pred.mx<span class="sc">-</span>true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T)</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">apply</span>(true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T)</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    model.name.ix <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">paste0</span>(ix,<span class="st">&quot;.val&quot;</span>),<span class="fu">paste0</span>(ix,<span class="st">&quot;.test&quot;</span>))</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,model.name.ix)</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>    model.family <span class="ot">=</span> <span class="fu">c</span>(model.family,<span class="fu">rep</span>(ix,<span class="dv">2</span>))</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    rmse <span class="ot">=</span> <span class="fu">c</span>(rmse,<span class="fu">sqrt</span>(<span class="fu">apply</span>(sq.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T)))</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    mae <span class="ot">=</span> <span class="fu">c</span>(mae,<span class="fu">apply</span>(abs.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">apply</span>(r.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)}</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>  <span class="do">## stmomo results ---- </span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>   out1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    model.name,</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    model.family,</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    mre,</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    error.incidence,</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    rmse,</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    mae)</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;.val&quot;</span>, model.name)</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>  temp.df <span class="ot">&lt;-</span> out1[temp.ix,]</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>  out2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    <span class="at">rmse=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>rmse)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>rmse)))],</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    <span class="at">mre=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mre)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mre)))],</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    <span class="at">mae=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mae)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mae)))],</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">error.incidence=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>error.incidence)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>error.incidence)))])</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;.test&quot;</span>, model.name)</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>  out3 <span class="ot">&lt;-</span> out1[temp.ix,]</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>  best.df <span class="ot">=</span> out2</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>  best.df[<span class="dv">1</span>,]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>  out.test.min <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">rmse=</span>out3<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>rmse)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>rmse)))],</span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>    <span class="at">mre=</span>out3<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>mre)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>mre)))],</span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>    <span class="at">mae=</span>out3<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>mae)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>mae)))],</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>    <span class="at">error.incidence=</span>out3<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>error.incidence)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>error.incidence)))])</span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>  temp.mx<span class="ot">=</span><span class="fu">matrix</span>((<span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out2) <span class="sc">==</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out.test.min)),<span class="at">nrow=</span><span class="dv">1</span>)</span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>  choices.mx.fchl<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out2),<span class="at">nrow=</span><span class="dv">1</span>)</span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>  agreement.frame.fchl<span class="ot">=</span><span class="fu">data.frame</span>(temp.mx)</span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>  choices.frame.fchl<span class="ot">=</span><span class="fu">data.frame</span>(choices.mx.fchl)</span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(agreement.frame.fchl)<span class="ot">=</span><span class="fu">colnames</span>(out2)</span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(choices.frame.fchl)<span class="ot">=</span><span class="fu">colnames</span>(out2)</span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(col.ix <span class="cf">in</span> <span class="fu">colnames</span>(out2)){</span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>  res<span class="ot">=</span>out1<span class="sc">$</span>model.family[out1<span class="sc">$</span>model.name <span class="sc">==</span> out2[<span class="dv">1</span>,col.ix]]</span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>  res.test <span class="ot">=</span> out3<span class="sc">$</span>model.family <span class="sc">==</span> res</span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a>  best.df[<span class="dv">1</span>,col.ix] <span class="ot">=</span> out3[res.test,col.ix]}</span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>  families.set<span class="ot">=</span><span class="fu">c</span>(<span class="st">&#39;a&#39;</span>,<span class="st">&#39;apc&#39;</span>) <span class="co">#&#39;ap&#39;,</span></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">=</span> out3<span class="sc">$</span>model.family <span class="sc">%in%</span> families.set</span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>  comparison.df <span class="ot">=</span> out3[temp.ix,]</span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>  comparison.df <span class="ot">=</span> <span class="fu">cbind</span>(comparison.df,</span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>                        <span class="at">approach=</span><span class="fu">rep</span>(<span class="st">&#39;clmplus&#39;</span>,<span class="fu">length</span>(families.set)))</span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>  <span class="do">## apc ----</span></span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>  mae <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>  error.pc <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>  model.name <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>  error.incidence <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>  model.family <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>  mre <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>  true.inc.values <span class="ot">&lt;-</span> <span class="fu">t2c</span>(<span class="fu">cum2incr</span>(cumulative.payments.triangle))[<span class="dv">2</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),(J<span class="sc">-</span>leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>J]</span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(apc.mods <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&quot;AC&quot;</span>,<span class="st">&quot;APC&quot;</span>)){ <span class="co">#,&quot;AP&quot;</span></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>    fit <span class="ot">&lt;-</span> <span class="fu">apc.fit.model</span>(newt.apc,</span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.family =</span> <span class="st">&quot;od.poisson.response&quot;</span>,</span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.design =</span> apc.mods)</span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(apc.mods <span class="sc">==</span> <span class="st">&quot;AC&quot;</span>){fcst <span class="ot">&lt;-</span> <span class="fu">apc.forecast.ac</span>(fit)<span class="sc">$</span>trap.response.forecast}</span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if(apc.mods == &quot;AP&quot;){fcst &lt;- apc.forecast.ap(fit)$trap.response.forecast}</span></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(apc.mods <span class="sc">==</span> <span class="st">&quot;APC&quot;</span>){fcst <span class="ot">&lt;-</span> <span class="fu">apc.forecast.apc</span>(fit)<span class="sc">$</span>trap.response.forecast}</span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>    plogram.hat <span class="ot">=</span> <span class="fu">t2c.full.square</span>(<span class="fu">incr2cum</span>(<span class="fu">t</span>(fcst)))</span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>    pred.mx <span class="ot">=</span> plogram.hat[,(J<span class="sc">-</span>leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>J]</span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>    <span class="co"># true.mx= rbind(rep(NA,2),true.inc.values)</span></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # this is meant to be NA</span></span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>    <span class="co"># true.mx[2,2]=NA</span></span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>    sq.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a>    abs.errors <span class="ot">=</span> <span class="fu">abs</span>(pred.mx<span class="sc">-</span>true.mx)</span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.mx<span class="sc">-</span>true.mx)<span class="sc">/</span>true.mx <span class="co">#use same benchmark</span></span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">apply</span>(pred.mx<span class="sc">-</span>true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T)</span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">apply</span>(true.mx,sum,<span class="at">MARGIN=</span><span class="dv">2</span>,<span class="at">na.rm=</span>T) <span class="co">#use same benchmark</span></span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>    model.name.ix <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">paste0</span>(apc.mods,<span class="st">&quot;.val&quot;</span>),<span class="fu">paste0</span>(apc.mods,<span class="st">&quot;.test&quot;</span>))</span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,<span class="fu">tolower</span>(model.name.ix))</span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a>    model.family <span class="ot">=</span> <span class="fu">c</span>(model.family,<span class="fu">tolower</span>(<span class="fu">rep</span>(apc.mods,<span class="dv">2</span>)))</span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a>    rmse <span class="ot">=</span> <span class="fu">c</span>(rmse,<span class="fu">sqrt</span>(<span class="fu">apply</span>(sq.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T)))</span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a>    mae <span class="ot">=</span> <span class="fu">c</span>(mae,<span class="fu">apply</span>(abs.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">apply</span>(r.errors,<span class="at">MARGIN =</span> <span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)}</span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>   out4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>    model.name,</span>
+<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>    model.family,</span>
+<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a>    mre,</span>
+<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>    error.incidence,</span>
+<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>    rmse,</span>
+<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>    mae)</span>
+<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;.val&quot;</span>, model.name)</span>
+<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>  temp.df <span class="ot">&lt;-</span> out4[temp.ix,]</span>
+<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a>  out5 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a>    <span class="at">rmse=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>rmse)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>rmse)))],</span>
+<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a>    <span class="at">mre=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mre)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mre)))],</span>
+<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>    <span class="at">mae=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mae)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>mae)))],</span>
+<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a>    <span class="at">error.incidence=</span>temp.df<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>error.incidence)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(temp.df<span class="sc">$</span>error.incidence)))])</span>
+<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;.test&quot;</span>, model.name)</span>
+<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a>  out6 <span class="ot">&lt;-</span> out4[temp.ix,]</span>
+<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a>  out.test.min2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a>  <span class="at">rmse=</span>out6<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>rmse)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>rmse)))],</span>
+<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a>  <span class="at">mre=</span>out6<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>mre)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>mre)))],</span>
+<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>  <span class="at">mae=</span>out6<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>mae)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>mae)))],</span>
+<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">error.incidence=</span>out6<span class="sc">$</span>model.name[<span class="fu">which</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>error.incidence)<span class="sc">==</span><span class="fu">min</span>(<span class="fu">abs</span>(out6<span class="sc">$</span>error.incidence)))])</span>
+<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a>  temp.mx<span class="ot">=</span><span class="fu">matrix</span>((<span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out5) <span class="sc">==</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out.test.min2)),<span class="at">nrow=</span><span class="dv">1</span>)</span>
+<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a>  choices.mx.apc<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, out5),<span class="at">nrow=</span><span class="dv">1</span>)</span>
+<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a>  choices.frame.apc<span class="ot">=</span><span class="fu">data.frame</span>(choices.mx.apc)</span>
+<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a>  agreement.frame.apc<span class="ot">=</span><span class="fu">data.frame</span>(temp.mx)</span>
+<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(agreement.frame.apc)<span class="ot">=</span><span class="fu">colnames</span>(out5)</span>
+<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(choices.frame.apc)<span class="ot">=</span><span class="fu">colnames</span>(out5)</span>
+<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>  best.df.apc <span class="ot">=</span> out5</span>
+<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>  best.df.apc[<span class="dv">1</span>,]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(col.ix <span class="cf">in</span> <span class="fu">colnames</span>(out5)){</span>
+<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>  res<span class="ot">=</span>out4<span class="sc">$</span>model.family[out4<span class="sc">$</span>model.name <span class="sc">==</span> out5[<span class="dv">1</span>,col.ix]]</span>
+<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>  res.test <span class="ot">=</span> out6<span class="sc">$</span>model.family <span class="sc">==</span> res</span>
+<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a>  best.df.apc[<span class="dv">1</span>,col.ix] <span class="ot">=</span> out6[res.test,col.ix]}</span>
+<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>  families.set<span class="ot">=</span><span class="fu">c</span>(<span class="st">&#39;ac&#39;</span>,<span class="st">&#39;apc&#39;</span>) <span class="co">#&#39;ap&#39;,</span></span>
+<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a>  temp.ix <span class="ot">=</span> out6<span class="sc">$</span>model.family <span class="sc">%in%</span> families.set</span>
+<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>  comparison.df.apc <span class="ot">=</span> out6[temp.ix,]</span>
+<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a>  comparison.df.apc <span class="ot">=</span> <span class="fu">cbind</span>(comparison.df.apc,</span>
+<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>                            <span class="at">approach=</span><span class="fu">rep</span>(<span class="st">&#39;apc&#39;</span>,<span class="fu">length</span>(families.set)))</span>
+<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>    <span class="at">best.model.fchl =</span> best.df,</span>
+<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>    <span class="at">best.model.apc =</span> best.df.apc,</span>
+<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>    <span class="at">agreement.frame.fchl=</span>agreement.frame.fchl,</span>
+<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>    <span class="at">agreement.frame.apc=</span>agreement.frame.apc,</span>
+<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">choices.frame.fchl=</span>choices.frame.fchl,</span>
+<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">choices.frame.apc=</span>choices.frame.apc,</span>
+<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">comparison.df =</span> <span class="fu">rbind</span>(comparison.df,</span>
+<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a>                          comparison.df.apc))</span>
+<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)}</span>
+<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>modelcomparison<span class="ot">&lt;-</span><span class="cf">function</span>(list.of.datasets){</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;This functions returns the datasets to plot the bake-off section of the paper.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">  The input is a list of datasets that constitue the sample. </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">  The output is datasets that contain accuracy measures.</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  best.fit<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  families.fit<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  agreement.fchl<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  agreement.apc<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  choices.fchl<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  choices.apc<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(df.ix <span class="cf">in</span> <span class="fu">names</span>(list.of.datasets)){</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;.. Comparison on dataset: &quot;</span>,df.ix))</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    out.ix <span class="ot">=</span> <span class="fu">modelcomparison.1d</span>(list.of.datasets[[df.ix]])</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    best.of.the.bests.df<span class="ot">=</span><span class="fu">best.of.the.bests</span>(out.ix<span class="sc">$</span>best.model.fchl,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                                        out.ix<span class="sc">$</span>best.model.apc)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    out.ix<span class="sc">$</span>best.model.fchl[<span class="st">&#39;package&#39;</span>]<span class="ot">=</span> <span class="st">&#39;clmplus&#39;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    out.ix<span class="sc">$</span>best.model.apc[<span class="st">&#39;package&#39;</span>]<span class="ot">=</span> <span class="st">&#39;apc&#39;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    best.of.the.bests.df[<span class="st">&#39;package&#39;</span>]<span class="ot">=</span><span class="st">&#39;overall.best&#39;</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    best.fit<span class="ot">=</span><span class="fu">rbind</span>(best.fit,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                   out.ix<span class="sc">$</span>best.model.fchl,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                   out.ix<span class="sc">$</span>best.model.apc,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                   best.of.the.bests.df)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    families.fit<span class="ot">=</span><span class="fu">rbind</span>(families.fit,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                   out.ix<span class="sc">$</span>comparison.df)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    agreement.fchl<span class="ot">=</span><span class="fu">rbind</span>(agreement.fchl,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                         out.ix<span class="sc">$</span>agreement.frame.fchl)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    agreement.apc<span class="ot">=</span><span class="fu">rbind</span>(agreement.apc,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>                         out.ix<span class="sc">$</span>agreement.frame.apc)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    choices.fchl<span class="ot">=</span><span class="fu">rbind</span>(choices.fchl,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>                         out.ix<span class="sc">$</span>choices.frame.fchl)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    choices.apc<span class="ot">=</span><span class="fu">rbind</span>(choices.apc,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>                         out.ix<span class="sc">$</span>choices.frame.apc)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  best.fit[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]<span class="ot">=</span><span class="fu">apply</span>(best.fit[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],<span class="at">MARGIN =</span> <span class="dv">2</span>,<span class="at">FUN =</span> as.numeric)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  families.fit[,<span class="fu">c</span>(<span class="st">&#39;mre&#39;</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;error.incidence&#39;</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;rmse&#39;</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;mae&#39;</span>)]<span class="ot">=</span><span class="fu">apply</span>(</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                    families.fit[,<span class="fu">c</span>(<span class="st">&#39;mre&#39;</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&#39;error.incidence&#39;</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&#39;rmse&#39;</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&#39;mae&#39;</span>)],</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>                    <span class="at">MARGIN =</span> <span class="dv">2</span>,</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>                    <span class="at">FUN =</span> as.numeric)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> <span class="fu">list</span>(<span class="at">best.fit=</span>best.fit,</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>             <span class="at">families.fit=</span>families.fit,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>             <span class="at">agreement.fchl=</span>agreement.fchl,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>             <span class="at">agreement.apc=</span>agreement.apc,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>             <span class="at">choices.fchl=</span>choices.fchl,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>             <span class="at">choices.apc=</span>choices.apc)</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bake.off <span class="ot">&lt;-</span> <span class="cf">function</span>(models.comparison){</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">  This function plots out the results from the previous computations. </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  It takes as input the resulting dataframes of model.comparison.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  The output is the boxplots of the paper&#39;s bake-off section. </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  p1<span class="ot">&lt;-</span> models.comparison<span class="sc">$</span>best.fit[,<span class="fu">c</span>(<span class="st">&quot;rmse&quot;</span>,<span class="st">&quot;mae&quot;</span>,<span class="st">&quot;package&quot;</span>)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(package)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>package,<span class="at">y=</span>value))<span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(.<span class="sc">~</span>name,<span class="at">nrow =</span> <span class="dv">1</span>,<span class="at">strip.position =</span> <span class="st">&#39;bottom&#39;</span>)<span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">strip.placement =</span> <span class="st">&#39;outside&#39;</span>,<span class="at">strip.background =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  p2<span class="ot">&lt;-</span> models.comparison<span class="sc">$</span>best.fit[,<span class="fu">c</span>(<span class="st">&quot;mre&quot;</span>,<span class="st">&quot;error.incidence&quot;</span>,<span class="st">&quot;package&quot;</span>)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(package)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>package,<span class="at">y=</span>value))<span class="sc">+</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(.<span class="sc">~</span>name,<span class="at">nrow =</span> <span class="dv">1</span>,<span class="at">strip.position =</span> <span class="st">&#39;bottom&#39;</span>)<span class="sc">+</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">strip.placement =</span> <span class="st">&#39;outside&#39;</span>,<span class="at">strip.background =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  abs.best<span class="ot">=</span>models.comparison<span class="sc">$</span>best.fit[,<span class="fu">c</span>(<span class="st">&quot;mre&quot;</span>,<span class="st">&quot;error.incidence&quot;</span>,<span class="st">&quot;package&quot;</span>)]</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  abs.best[,<span class="fu">c</span>(<span class="st">&quot;mre&quot;</span>,<span class="st">&quot;error.incidence&quot;</span>)]<span class="ot">=</span><span class="fu">apply</span>(abs.best[,<span class="fu">c</span>(<span class="st">&quot;mre&quot;</span>,<span class="st">&quot;error.incidence&quot;</span>)],</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">MARGIN=</span><span class="dv">2</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">FUN=</span>abs)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  p3<span class="ot">&lt;-</span> abs.best <span class="sc">%&gt;%</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(package)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>package,<span class="at">y=</span>value))<span class="sc">+</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(.<span class="sc">~</span>name,<span class="at">nrow =</span> <span class="dv">1</span>,<span class="at">strip.position =</span> <span class="st">&#39;bottom&#39;</span>)<span class="sc">+</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">strip.placement =</span> <span class="st">&#39;outside&#39;</span>,<span class="at">strip.background =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  only.ei<span class="ot">=</span>models.comparison<span class="sc">$</span>best.fit[,<span class="fu">c</span>(<span class="st">&quot;error.incidence&quot;</span>,<span class="st">&quot;package&quot;</span>)]</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  only.ei[,<span class="fu">c</span>(<span class="st">&quot;error.incidence&quot;</span>)]<span class="ot">=</span><span class="fu">abs</span>(only.ei[,<span class="fu">c</span>(<span class="st">&quot;error.incidence&quot;</span>)])</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  p4<span class="ot">&lt;-</span> abs.best <span class="sc">%&gt;%</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(package)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>package,<span class="at">y=</span>value))<span class="sc">+</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># facet_wrap(.~name,nrow = 1,strip.position = &#39;bottom&#39;)+</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.placement =</span> <span class="st">&#39;outside&#39;</span>,<span class="at">strip.background =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> <span class="fu">list</span>(<span class="at">p1=</span>p1,</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>             <span class="at">p2=</span>p2,</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>             <span class="at">p3=</span>p3,</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>             <span class="at">p4=</span>p4)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The models in the <code>clmplus</code> package are compared to those
+in the <code>apc</code> package. Below it can be found the code we used
+to create the bake-off plot in our paper.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out<span class="ot">=</span><span class="fu">modelcomparison</span>(<span class="at">list.of.datasets =</span> list.of.datasets)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>cake <span class="ot">=</span> <span class="fu">bake.off</span>(out)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cake<span class="sc">$</span>p3</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Comparison between apc and clmplus in terms of error
+incidence and mean relative error on the test set according the data
+split we showed above.</p>
+</div>
+</div>
+<div id="rankings" class="section level1">
+<h1>Rankings</h1>
+<p>Within this section we provide practitioners with the code to perform
+models ranking. Please observe that now we have a different training
+validation split as pointed out in the paper. The training validation
+split we use is represented in the following picture.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># models ranking</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>J<span class="ot">=</span><span class="dv">12</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">expand.grid</span>(<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(J<span class="dv">-1</span>)),<span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span>(J<span class="dv">-1</span>))),<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;origin&quot;</span>,<span class="st">&quot;dev&quot;</span>,<span class="st">&quot;value&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">==</span>(J<span class="dv">-1</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">2</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">&lt;</span>(J<span class="dv">-1</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>value[df<span class="sc">$</span>origin<span class="sc">+</span>df<span class="sc">$</span>dev<span class="sc">&gt;=</span>J]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df[J,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>df[J<span class="sc">*</span>J<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="cn">NA</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.integer</span>(dev), <span class="at">y=</span><span class="fu">as.integer</span>(origin))) <span class="sc">+</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">as.factor</span>(value),<span class="at">color=</span><span class="st">&quot;#000000&quot;</span>))<span class="sc">+</span><span class="fu">scale_y_reverse</span>()<span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;royalblue&quot;</span>, <span class="st">&quot;darkred&quot;</span>, <span class="st">&quot;white&quot;</span>),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.value =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Train&quot;</span>,<span class="st">&quot;Validation&quot;</span>,<span class="st">&quot;&quot;</span>))<span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;Development year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Accident year&quot;</span>,<span class="at">fill=</span><span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>), <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">7</span>))<span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>), <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">7</span>))<span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">guide =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAh0AAAFFCAMAAAB/i6/SAAAA6lBMVEUAAAAAADoAAGYAOmYAOpAAZmYAZrYzMzM6AAA6ADo6AGY6OmY6OpA6ZmY6ZrY6kLY6kNtBaeFNTU1NTY5Nbm5NbqtNjshmAABmADpmAGZmOgBmOmZmOpBmZmZmtttmtv9uTY5ujshuq+SLAACOTU2OTY6ObquOjk2OyP+QOgCQOjqQOmaQZgCQ2/+rbk2rbo6r5P+2ZgC2Zjq2tma225C2/7a2///Ijk3Ijm7Ijo7IyP/I///bkDrbtmbb25Db/9vb///e6/fkq27kq47k////tmb/yI7/25D/5Kv//7b//8j//9v//+T///8EdJSAAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAL0klEQVR4nO2dC1/byBVHXUohD9qydDck2bbu0mwX0jobt1tIipPNkoDLQ9//6+xIMuDHXMka5q1zfsQB/6+FmXsYSZZkBgWAxCD0E4CIwQ6QwQ6QwQ6QwQ6QwQ6QWdMOJOol2AEy2AEy2AEy2AEy2AEy2AEy2AEy2AEy2AEy2AEy2AEypnb8As6w3WNzjO34qgHCtgc2jTV25B9ih/UhzSjEDutDmlGIHdaHNKMQO6wPaUYhdlgf0oxC7LA+pBmFudtx82bvmVgWWzOiC3O34+KgODmUymJrRnRh7nZ8flsKUhTbCuzoGuZux7uZHdqy2JoRXZi7HZ+xAztE2O54SJi7HeyzPCTM3Y7GstiaEV2IHdaHNKMQO6wPaUYhdlgf0oxC7LA+pBmF2GF9SDMK+20HOMN2j81h7nA1d/y9geznDv/jnVaIHX7HO60QO/yOd1ohdvgd77RC7PA73mmF2OF3vNMKscPveKcVYoff8U4rxA6/451WiB1+xzutEDv8jndaIXb4He+0QuzwO95phdjhd7zTCrHD73inFWKH3/FOK8QOv+OdVogdfsc7rRA7/I53WmG/7QBn2O6xOcwdDwmdTA/YkUmIHfqy+DoVIsQOfVl8nQoRYoe+LL5OhQixQ18WX6dChNihL4uvUyFC7NCXxdepECF26Mvi61SIEDv0ZfF1KkSIHfqy+DoVIsQOfVl8nQoRYoe+LL5OhQixQ18WX6dChNihL4uvUyFC7NCXxdepECF26Mvi61SIEDv0ZfF1KkSIHfqy+DoVIsQOfVl8nQoRYoe+LPSZuTlju8fmMHeYTw+N80O/544QnQoRYodBWXxtdBRih0FZfG10FGKHQVl8bXQUYodBWXxtdBRih0FZfG10FGKHQVl8bXQUYoce/pb1V9ghcnFQvHsrlcXXRkchdkjc/HiqbrcV2IEdS1y9Ys2CHTJq5SKUxddGRyF26Dk7xA7skFD7LN98kcria6OjEDsMyuJro6MQOwzK4mujoxA7DMria6OjEDsMyuJro6MQOwzK4mujoxA7DMpCn5mbM7Z7bA5zh6N3NO/33BGijY5C7JDADuyQwQ7skMEO7JDBDuyQwQ7skMEO7JCZa/vli+N1ymri67F5iB0S2IEdMvNtHw/XKquIr8fmIXZIzM8d+wPFhnYCwQ4dfbKjU1l8PTYPsUNivu0T5g7sWGB+zfJ8NB6eb7WV1cTXY/MQOyQW91kmu8KOC3bo6JMd169H51vYgR33zLf9fPPno8Fua1lFfD02D7FDgn2WZO3Q/zRrPng95tt+uT/46+tRa1lFfD02D7FDYn6742g4Hk53PrWU1YQ+Mzdn1mydXzvUBul4mOlWqZPpoX9zx/nmmnNHiB6bh9hhxNJ2h/BSKXZ0DrOzo0tZfAI0hthhxMIxWv1rHUtlNfEJ0BhihxELbZ8MhBfDsKNzGNiO66PykOpgfity+kQ+u0tgue1KEN05QNjRNQw/dxjYsMxC28/LuUO7T4sdXcNI7Jg+fblxPH1U/s6rr6c7/9L/9gssbHfoj94vldXEJ0Bj2F87Hg3LUzMqNdTHo91CeM1CC/ssmdsxW72oNUItSKcVDnb0wY5x+UIWdkhhr+243B/erlmwQxf22o7q3+PRw+yodlY4Crf0c5qGEdlRvkzx25fDh9gxe/lkwFG4xZ/TNAxvhwV6cqUkdhjRk+tZsMOIxetZ1imriU+AxhA7jGDNgh0yPbkGHzuMML4GH5yxZuv0rhtZIJHPq2H+p4fAc4dnO9K+ngU7nNrR7XqWEAI0htjh1I7Er2fBDvdzR7rXs2CHUzsSv54FO9za0aUMO1rCvOyoX+1I+DgLdridO8rXSufeNyyxv1aMHfN2qI1IdXu3Bzo7t+MuWLxPpOHsn7PD8mOlbPYjhBCgMcSOhbljsnt7U3KvwYIdbd9icZ+lmD+f/f0P9dyxrcCOrmFoO8pp4/r1qLi/lqU6w7Q8Say+T32+8VN9n9qa0F/psrzPMrdDe3JYXBxoyuofIYQAjSF2LNhRmbHzae5aFmXCeLc4V16s3Lf5SX+lS8M+y/tT7EjXjnKtMlux3F3LUm42zNYsC/cpXfRnnN7vs7z479IxWrXRccF2h2kY3I7pzs/VQbO5a1mq9pf7Hkv3qXmmxY5V2Gd5SBjcjut//qQ2PRauZZnNHSv3tc8dRbVFOn080j4T7OgaBrejmPxlt1i6lqXe7li9TzW+zY5yO6bgGK2lMLwd9W/6wrUs10fVPkt93/XR/D5Lmx2JX+2EHUt2WKDh9Q6hrAY7WsLc7OAYrc0wOzu6lGFHS5idHZ32WcAZa7bOrx3x77NENj0Enjs8kNQ+C3Z4Jql9FuzwTFL7LNjhmZV3s435zEHs8MxC29XkEfU7YWOHZ+baPhls/Ed6H33s6BrmZUf1FxbOscNWmJcd5dyx+QE7bIW52VG+qbb0FuvY0TXMzw7FmH0WO2GWdqxbhh0tIXZgh/dv6RfswA4Z7MAOGezADhnswA4Z7MAOGezADhnswA4ZYzvAGbZ7bE5sc0dK0wNzh1SGHS0hdmCH92/pF+zADhnswA4Z7MAOGezADhnswA4Z7MAOGezADhnswA4Z7MAOGezADhnswA4Z7MAOGezADhnswA4Z7MAOGezADhnswA4ZzjqOD9s9NifA3JHN9MDcIZVhR0uIHdjh/Vv6BTuwQwY7sEMGO7BDBjuwQ6bBjqtXe8/EMuxoCXO3w9VfOseOXOwoJ49tBXZ0DXO3Q61Zvv5OKsOOljB3OxQXB1IZdrSEuduh1iwnbHeYhrnbcfOGfRbsMCrDjpYQO7DD+7f0C3Zghwx2YIcMdmCHDHZghwxnHceH7R6b42bu6Mf0wNwhlWFHS4gd2OH9W/oFO7BDBjuwQwY7sEMGO7BDBjuwQwY7sEMGO7BDBjuwQwY7sEMGO7BDBjuwQwY7sEMGO7BDBjuwQwY7sEMGO7BDBjuwQ4azjuPDdo/NMbajqZqw73NHUzUhdsgQYocMIXbIEGKHDCF2yBBihwwhdsgQYocMIXbIEGKHDCF2yBBihwwhdsgQYocMIXbIEGKHDCF2yBBihwxh3+0AZ9jusTmmdkAfwA6QwQ6QwQ6QwQ6QwQ6QwQ6QwQ6Qkdp+dlhcvdr702lLGWSN0PaTvcNSkLOD5jLIG33br/6n1FBclLfbCuzoJQ1rFiXJP760lEHWNNlx9f3pXVkL220FZrhZbFJPtlysJxdWabDj/387FcJVtu08Gz+LTerJulrsWjTYcbK3t3cgxMskNTJJPdko7ehIUiOT1JPNwQ7IEuwAGewAGewAGewAGRt23LzZe2ZhMX4Wq5b6zZf2sq5cvXIyBksHQ31jw46Lg+Lk0MJyVhf77q31pZ4d1kcJ7C/2wv5ilw+G+saGHZ/flp10wM2P9n9p3v/gZO4o7bA+eSwcDA2BDTveObLj6pWDyVrNci6erJr/v/7O/mKXDob6Juq5w8Vi358m9GSXD4b6JuLtjjMnv+VuNhCq41JuFtvlYKht4t5ncbCF4GifxdEYdDwYahte7wAZ7AAZ7AAZ7AAZ7AAZ7ACZdO04HwwGvxlpgunOp5aHXv65rQIqErZjS4nw5Hg1aLejvQIq0rajGA/LOWSrmOwW5b/qc9X7yWCwW0yfviy/Urd/PBrcZr/fH2xdHw02lR7j3Woh1f3FZFDXbmh06y+J2zHZLeeB8VDdXr8e3X7+8cnx5fPR9PHo+miobsuPnY91ppIXx/XcoT4v89vHl/c/HgX+oSIjeTvKzQ81M/x7NP1DUX8+3fmwVdQdr+2pPj7MsluLiqJWY/b46SO1EcMaZ4nE7RgPq//Kr8qVTPW5YMcsu7dDlZcro+r+841qtsGORdK2Q60c6vVHcfntt8fFbF2yuGaZ2fHx9qt7Oy6fP719TLn9wdyxQsJ2zPZo663KYrxVFPNbpcPbrdKZHZ9uM2XH5f5mpcHk7jGX+4Pf7Q+xY4l07WiltdfKEy9PJF16bMf5YMvTM0mWjO2AB4MdIIMdIIMdIIMdIIMdIIMdIPMrdJ/uZ0ZExcUAAAAASUVORK5CYII=" alt />
+<p class="caption">Train, validation split we used for models
+rankings.</p>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>modelsranking<span class="fl">.1</span>d <span class="ot">&lt;-</span> <span class="cf">function</span>(data.T){</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">  Function to rank the clmplus package and apc package age-period-cohort models.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  This function takes a triangle of cumulative payments as input.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">  It returns the ranking on the triangle.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  leave.out<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  model.name <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  error.incidence <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  mre <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#pre-processing</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  triangle <span class="ot">&lt;-</span> data.T<span class="sc">$</span>cumulative.payments.triangle</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  J <span class="ot">&lt;-</span> <span class="fu">dim</span>(triangle)[<span class="dv">2</span>]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  reduced.triangle <span class="ot">&lt;-</span> <span class="fu">c2t</span>(<span class="fu">t2c</span>(triangle)[<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out)])</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  newt.rtt <span class="ot">&lt;-</span> <span class="fu">RtTriangle</span>(reduced.triangle)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  to.project <span class="ot">&lt;-</span> <span class="fu">t2c</span>(triangle)[<span class="dv">1</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out<span class="dv">-1</span>),J<span class="sc">-</span>leave.out]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  true.values <span class="ot">&lt;-</span> <span class="fu">t2c</span>(triangle)[<span class="dv">2</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),J]</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(ix <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&#39;a&#39;</span>,<span class="st">&#39;ac&#39;</span>,<span class="st">&#39;ap&#39;</span>,<span class="st">&#39;apc&#39;</span>)){</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    hz.fit <span class="ot">&lt;-</span> StMoMo<span class="sc">::</span><span class="fu">fit</span>(models[[ix]], </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Dxt =</span> newt.rtt<span class="sc">$</span>occurrance, </span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Ext =</span> newt.rtt<span class="sc">$</span>exposure,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                          <span class="at">iterMax=</span><span class="fu">as.integer</span>(<span class="fl">1e+05</span>))</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    hz.rate <span class="ot">=</span> forecast<span class="sc">::</span><span class="fu">forecast</span>(hz.fit,<span class="at">h=</span>leave.out)<span class="sc">$</span>rates</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    fij <span class="ot">=</span> (<span class="dv">2</span><span class="sc">+</span>hz.rate)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">-</span>hz.rate)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    pred.fij <span class="ot">=</span> fij[(leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(fij)]</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    pred.v<span class="ot">=</span>to.project<span class="sc">*</span>pred.fij</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.v<span class="sc">-</span>true.values)<span class="sc">/</span>true.values</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">sum</span>(pred.v<span class="sc">-</span>true.values,<span class="at">na.rm =</span> T)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">sum</span>(true.values)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">paste0</span>(<span class="st">&#39;clmplus.&#39;</span>,ix))</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">mean</span>(r.errors))</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    ix<span class="ot">=</span><span class="st">&#39;lc&#39;</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    hz.fit <span class="ot">&lt;-</span> <span class="fu">fit.lc.nr</span>(<span class="at">data.T =</span> newt.rtt,</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>                        <span class="at">iter.max =</span> <span class="fl">3e+04</span>)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(hz.fit<span class="sc">$</span>converged<span class="sc">==</span><span class="cn">TRUE</span>){hz.rate <span class="ot">=</span> <span class="fu">forecast.lc.nr</span>(hz.fit,<span class="at">J=</span><span class="fu">dim</span>(newt.rtt<span class="sc">$</span>cumulative.payments.triangle)[<span class="dv">2</span>])<span class="sc">$</span>rates[,<span class="dv">1</span><span class="sc">:</span>leave.out]</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    fij <span class="ot">=</span> (<span class="dv">2</span><span class="sc">+</span>hz.rate)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">-</span>hz.rate)</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    pred.fij <span class="ot">=</span> fij[(leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">length</span>(fij)]</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    pred.v<span class="ot">=</span>to.project<span class="sc">*</span>pred.fij</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.v<span class="sc">-</span>true.values)<span class="sc">/</span>true.values</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">sum</span>(pred.v<span class="sc">-</span>true.values,<span class="at">na.rm =</span> T)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">sum</span>(true.values)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">paste0</span>(<span class="st">&#39;clmplus.&#39;</span>,ix))</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">mean</span>(r.errors))</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    out1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    model.name,</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mre,</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>    error.incidence)</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>  <span class="do">## APC package</span></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>  newt.apc <span class="ot">&lt;-</span> <span class="fu">apc.data.list</span>(<span class="at">response=</span>newt.rtt<span class="sc">$</span>incremental.payments.triangle,</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data.format=</span><span class="st">&quot;CL&quot;</span>)</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    <span class="do">## apc ----</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>  mae <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>  error.pc <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>  model.name <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>  error.incidence <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>  model.family <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>  mre <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>  true.inc.values <span class="ot">&lt;-</span> <span class="fu">t2c</span>(data.T<span class="sc">$</span>incremental.payments.triangle)[<span class="dv">2</span><span class="sc">:</span>(J<span class="sc">-</span>leave.out),(J<span class="sc">-</span>leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>J]</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(apc.mods <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&quot;AC&quot;</span>,<span class="st">&quot;APC&quot;</span>)){ <span class="co">#,&quot;AP&quot;</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>    fit <span class="ot">&lt;-</span> <span class="fu">apc.fit.model</span>(newt.apc,</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.family =</span> <span class="st">&quot;od.poisson.response&quot;</span>,</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>                         <span class="at">model.design =</span> apc.mods)</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(apc.mods <span class="sc">==</span> <span class="st">&quot;AC&quot;</span>){fcst <span class="ot">&lt;-</span> <span class="fu">apc.forecast.ac</span>(fit)<span class="sc">$</span>trap.response.forecast}</span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if(apc.mods == &quot;AP&quot;){fcst &lt;- apc.forecast.ap(fit)$trap.response.forecast}</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(apc.mods <span class="sc">==</span> <span class="st">&quot;APC&quot;</span>){fcst <span class="ot">&lt;-</span> <span class="fu">apc.forecast.apc</span>(fit)<span class="sc">$</span>trap.response.forecast}</span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>    plogram.hat <span class="ot">=</span> <span class="fu">t2c.full.square</span>(<span class="fu">incr2cum</span>(<span class="fu">t</span>(fcst)))</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>    pred.v <span class="ot">=</span> plogram.hat[,(J<span class="sc">-</span>leave.out<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>J]</span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>    pred.v <span class="ot">=</span> pred.v[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(pred.v)]</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>    r.errors <span class="ot">=</span> (pred.v<span class="sc">-</span>true.values)<span class="sc">/</span>true.values</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>    error.inc.num <span class="ot">=</span> <span class="fu">sum</span>(pred.v<span class="sc">-</span>true.values)</span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>    error.inc.den <span class="ot">=</span> <span class="fu">sum</span>(true.values)</span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>    model.name <span class="ot">=</span> <span class="fu">c</span>(model.name,</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">paste0</span>(<span class="st">&#39;apc.&#39;</span>,<span class="fu">tolower</span>(apc.mods)))</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>    error.incidence <span class="ot">=</span> <span class="fu">c</span>(error.incidence,error.inc.num<span class="sc">/</span>error.inc.den)</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>    mre <span class="ot">=</span> <span class="fu">c</span>(mre,<span class="fu">mean</span>(r.errors))</span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>  out2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>    model.name,</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mre,</span></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>    error.incidence)</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>  out3 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(out1,out2)</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>  out3 <span class="ot">&lt;-</span> out3[<span class="fu">order</span>(<span class="fu">abs</span>(out3<span class="sc">$</span>error.incidence),<span class="at">decreasing =</span> F),]</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>  out3[,<span class="st">&#39;ei.rank&#39;</span>]<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(out3)[<span class="dv">1</span>])</span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>  <span class="co"># out3[,&#39;mre.rank&#39;]=order(abs(out3$mre),decreasing = F)</span></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>  <span class="co">#fix it manually</span></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>  r2set<span class="ot">=</span><span class="fu">min</span>(out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;apc.ac&#39;</span>],</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>            out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;clmplus.a&#39;</span>])</span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>  out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;apc.ac&#39;</span>]<span class="ot">=</span>r2set</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>  out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;clmplus.a&#39;</span>]<span class="ot">=</span>r2set</span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>( out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;apc.ac&#39;</span>] <span class="sc">&lt;</span> <span class="fu">max</span>(out3<span class="sc">$</span>ei.rank)){</span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>    cond<span class="ot">=</span>out3<span class="sc">$</span>ei.rank<span class="sc">&gt;</span>out3<span class="sc">$</span>ei.rank[out3<span class="sc">$</span>model.name<span class="sc">==</span><span class="st">&#39;apc.ac&#39;</span>]</span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>    out3<span class="sc">$</span>ei.rank[cond]<span class="ot">=</span>out3<span class="sc">$</span>ei.rank[cond]<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">models.ranks=</span>out3))</span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>modelsranking <span class="ot">&lt;-</span> <span class="cf">function</span>(list.of.datasets){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  This functions returns the datasets to plot in the ranking section of the paper.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">  The input is a list of datasets that constitue the sample. </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">  The output is the rankings across different data sources.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  full.ranks<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(df.ix <span class="cf">in</span> <span class="fu">names</span>(list.of.datasets)){</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    out.df<span class="ot">=</span><span class="fu">modelsranking.1d</span>(<span class="fu">RtTriangle</span>(list.of.datasets[[df.ix]]))</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    out.df<span class="sc">$</span>models.ranks[,<span class="st">&#39;data.source&#39;</span>]<span class="ot">=</span><span class="fu">rep</span>(df.ix,<span class="fu">dim</span>(out.df<span class="sc">$</span>models.ranks)[<span class="dv">1</span>])</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    full.ranks<span class="ot">=</span><span class="fu">rbind</span>(full.ranks,out.df<span class="sc">$</span>models.ranks)  </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">full.ranks=</span>full.ranks))</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>full.ranks<span class="ot">=</span><span class="fu">modelsranking</span>(list.of.datasets)</span></code></pre></div>
+<p>The following picture is the models ranks plot we included in the
+paper.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p_min_expd0 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(full.ranks<span class="sc">$</span>full.ranks, <span class="fu">aes</span>(model.name, data.source)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">cut</span>(ei.rank, <span class="at">breaks=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">labels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)), <span class="at">colour =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggtitle</span>(<span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> ei.rank))<span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_y_discrete</span>(<span class="at">limits=</span><span class="fu">names</span>(list.of.datasets)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_manual</span>(<span class="at">drop=</span><span class="cn">FALSE</span>, <span class="at">values=</span><span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;#6699CC&quot;</span>))(<span class="dv">6</span>), <span class="at">na.value=</span><span class="st">&quot;#EEEEEE&quot;</span>, <span class="at">name=</span><span class="st">&quot;Rank&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;Model&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Data source&quot;</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>p_min_expd0</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Results of models rankings.</p>
+</div>
+<p>It can be useful to inspect the average rank of the different models
+we were comparing.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tbl<span class="ot">=</span>full.ranks<span class="sc">$</span>full.ranks <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(model.name) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">mean.rank =</span> <span class="fu">mean</span>(ei.rank))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>tbl</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Output</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 7 × 2</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   model.name  mean.rank</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;chr&gt;           &lt;dbl&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 apc.ac           3.77</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 apc.apc          4.59</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 clmplus.a        3.77</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 clmplus.ac       3.36</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 clmplus.ap       2.41</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 clmplus.apc      2.41</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 7 clmplus.lc       3.38</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>temp.df<span class="ot">=</span>full.ranks<span class="sc">$</span>full.ranks[,<span class="fu">c</span>(<span class="st">&#39;model.name&#39;</span>,<span class="st">&#39;ei.rank&#39;</span>)] <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model.name, ei.rank) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<p>The following picture was not included in the paper but it shows the
+models ranks counts. It provides additional consistency to the results
+we included in our work.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(temp.df, <span class="fu">aes</span>(<span class="at">y=</span>count, <span class="at">x=</span><span class="fu">factor</span>(ei.rank))) <span class="sc">+</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&quot;stack&quot;</span>, <span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,<span class="at">fill=</span><span class="st">&#39;#6699CC&#39;</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">15</span>))<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>model.name, <span class="at">scales=</span><span class="st">&#39;free&#39;</span>)<span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Rank&quot;</span>)</span></code></pre></div>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Number of times each model scored positions from 1 to
+6.</p>
+</div>
+</div>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<p>In this vignette we wanted to show how the tool-box of actuarial
+scientists is enriched thanks to <code>clmplus</code>.</p>
+<ul>
+<li><p>It is important to perform different analysis to validate
+results. In this work we showed two.</p></li>
+<li><p>There is no best model in absolute terms: our purpose is to show
+that more options can improve claims reserving.</p></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
