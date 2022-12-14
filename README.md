@@ -17,7 +17,6 @@ Examples of model configurations we support:
 | ac              | age-cohort                      |development-accident              |
 | ap              | age-period                      |development-calendar              |
 | apc             | age-period-cohort               |development-calendar-accident     |
-| lc              | lee-carter                      |development-development x calendar|
 
 ## Installation 
 
@@ -25,7 +24,7 @@ It is possible to download `clmplus` from GitHub.
 
 ```
 library(devtools)
-devtools::install_devtools::install_github("gpitt71/clmplus")
+devtools::install_github("gpitt71/clmplus")
 
 ```
 

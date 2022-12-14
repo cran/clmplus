@@ -4,10 +4,12 @@
 \alias{plot.clmplusmodel}
 \title{Plot the hazard model fitted and forecasted parameters}
 \usage{
-\method{plot}{clmplusmodel}(x, ...)
+\method{plot}{clmplusmodel}(x, cy.type = "fe", ...)
 }
 \arguments{
 \item{x}{clmplus model to be plotted.}
+
+\item{cy.type}{whether to show fitted period effect with or without extrapolatio Default is "fe", standing for fitted and extrapolated. Alternative is to specify "f" for fitted effect.}
 
 \item{...}{Arguments to be passed to plot.}
 }

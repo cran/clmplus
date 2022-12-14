@@ -1,7 +1,7 @@
 Package: clmplus
 Type: Package
-Title: Tool-Box of Chain Ladder + Models
-Version: 0.0.1
+Title: Tool-Box of Chain Ladder Plus Models
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Gabriele",
              family = "Pittarello",
@@ -24,19 +24,19 @@ Description: Implementation of the chain ladder model under the reverse time fra
 URL: https://github.com/gpitt71/clmplus
 BugReports: https://github.com/gpitt71/clmplus/issues
 License: GPL (>= 2)
-Imports: StMoMo, ChainLadder, ggplot2, forecast, gridExtra, grid,
+Imports: StMoMo, ChainLadder, stats, ggplot2, forecast, gridExtra,
         reshape2
 Encoding: UTF-8
 LazyData: true
 Suggests: knitr, rmarkdown, apc, dplyr, tidyr
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 NeedsCompilation: no
-Packaged: 2022-08-31 17:30:04 UTC; gpitt
+Packaged: 2022-12-14 15:22:01 UTC; gpitt
 Author: Gabriele Pittarello [aut, cre, cph]
     (<https://orcid.org/0000-0003-3360-5826>),
   Munir Hiabu [aut, cph] (<https://orcid.org/0000-0001-5846-667X>),
   Andres Villegas [aut, cph]
 Maintainer: Gabriele Pittarello <gabriele.pittarello@uniroma1.it>
 Repository: CRAN
-Date/Publication: 2022-09-01 14:50:02 UTC
+Date/Publication: 2022-12-14 16:20:06 UTC

@@ -83,9 +83,9 @@ diagonal=rev(t2c(mck.chl$FullTriangle)[,dim(mck.chl$FullTriangle)[2]])
 
 ## ----clm replicated-----------------------------------------------------------
 data.frame(ultimate.cost.mack=ultimate.chl,
-           ultimate.cost.fchl=a.model$ultimate.cost,
+           ultimate.cost.clmplus=a.model$ultimate.cost,
            reserve.mack=ultimate.chl-diagonal,
-           reserve.fchl=a.model$reserve
+           reserve.clmplus=a.model$reserve
            )
 
 cat('\n Total reserve:',
@@ -111,7 +111,7 @@ ac.fcst.apc = apc.forecast.ac(ac.model.apc)
 
 data.frame(reserve.mack=ultimate.chl-diagonal,
            reserve.apc=c(0,ac.fcst.apc$response.forecast.coh[,'forecast']),
-           reserve.fchl=a.model$reserve
+           reserve.clmplus=a.model$reserve
            
            )
 
@@ -120,24 +120,42 @@ data.frame(reserve.mack=ultimate.chl-diagonal,
 ## ----fitted ax amodel---------------------------------------------------------
 a.model$model.fit$ax
 
-## ----plot effects ax----------------------------------------------------------
-p.a=plot(a.model)
+## ----plot effects ax, message=FALSE, warning=FALSE----------------------------
+plot(a.model)
 
 ## ----amodel residuals---------------------------------------------------------
 #make it triangular
 plotresiduals(a.model)
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
-ac.model <- clmplus(rtt, hazard.model="ac")
+ac.model <- clmplus(rtt, 
+                    hazard.model="ac",
+                    gk.fc.model='a')
 plotresiduals(ac.model)
 
+## ----message=FALSE, warning=FALSE---------------------------------------------
+
+plot(ac.model)
+
+
 ## ----apapc models, message=FALSE, warning=FALSE-------------------------------
-ap.model = clmplus(rtt,hazard.model = "ap")
-apc.model = clmplus(rtt,hazard.model = "apc")
+ap.model = clmplus(rtt,
+                   hazard.model = "ap", 
+                   ckj.fc.model='a',
+                   ckj.order = c(0,1,0))
+
+apc.model = clmplus(rtt,hazard.model = "apc", 
+                   gk.fc.model='a', 
+                   ckj.fc.model='a',
+                   gk.order = c(1,1,0),
+                   ckj.order = c(0,1,0))
 
 ## ----residuals apmodel--------------------------------------------------------
 plotresiduals(ap.model)
 
 ## ----residuals apcmodel-------------------------------------------------------
 plotresiduals(apc.model)
+
+## ----apc effects, message=FALSE, warning=FALSE--------------------------------
+plot(apc.model)
 

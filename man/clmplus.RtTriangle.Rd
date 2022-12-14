@@ -16,6 +16,10 @@
   cohortAgeFun = NULL,
   constFun = function(ax, bx, kt, b0x, gc, wxt, ages) list(ax = ax, bx = bx, kt = kt, b0x
     = b0x, gc = gc),
+  gk.fc.model = "a",
+  ckj.fc.model = "a",
+  gk.order = c(1, 1, 0),
+  ckj.order = c(0, 1, 0),
   ...
 )
 }
@@ -28,6 +32,7 @@
 \item{'ac': Age and cohort effects.}
 \item{'ap': Age and cohort effects.}
 \item{'apc': Age cohort and period effects.}
+\item{'lc': Lee-Carter parameters: age and age-period interaction effects.}
 \item{'cbd': Cairns-Blake-Dowd mortality model (CBD).}
 \item{'m6': CBD with cohorts.}
 \item{'m7': CBD m7 extension.}
@@ -72,7 +77,15 @@ of the model parameters with the identifiability constraints applied. If
 omitted no identifiability constraints are applied to the model.
 To be disregarded unless the practitioner specifies his own hazard model in StMoMo.}
 
-\item{...}{extra arguments to be passed from or to other methods.}
+\item{gk.fc.model}{model to forecast the cohort component for the last accident period. It can be either arima ('a') or linear model ('l'). Disregarded for models that do not have a cohort effect.}
+
+\item{ckj.fc.model}{model to forecast the calendar period effect. It can be either arima ('a') or linear model ('l'). Disregarded for models that do not have a period effect.}
+
+\item{gk.order}{order of the arima model with drift for the accident year effect extrapolation. Default to (1,1,0).}
+
+\item{ckj.order}{order of the arima model with drift for the calendar year effect extrapolation. Default to (0,1,0).}
+
+\item{...}{parameters to be passed to clmplus.}
 }
 \value{
 An object of class \code{"clmplusmodel"}. A list with the following elements:

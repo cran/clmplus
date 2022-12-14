@@ -2,6 +2,7 @@
 #'
 #' This function allows to define the class of triangles for reverse time models.
 #' @param cumulative.payments.triangle Input triangle of cumulative payments.
+#' @param k Claims exposure in the cell, also known as lost exposure.
 #' 
 #' @examples
 #' data(sifa.mtpl)
@@ -26,7 +27,7 @@
 #' Scandinavian Actuarial Journal 2017 (2017): 708 - 729.
 #' 
 #' @export
-RtTriangle <- function(cumulative.payments.triangle)
+RtTriangle <- function(cumulative.payments.triangle, k=1/2)
 {
   
   rtt.input.env$properties.cpt(cumulative.payments.triangle)
@@ -36,18 +37,27 @@ RtTriangle <- function(cumulative.payments.triangle)
   
   # find out occurrance and exposure
   occurrance=pkg.env$t2c(incrementals)
-  exposure=pkg.env$t2c(cumulative.payments.triangle-incrementals/2)
+  drop=1-k
+  exposure=pkg.env$t2c(cumulative.payments.triangle-drop*incrementals)
   
-  occurrance[is.na(occurrance)]=c(0.)
-  exposure[is.na(occurrance)]=c(0.)
+  # occurrance[is.na(occurrance)]=c(0.)
+  # exposure[is.na(occurrance)]=c(0.)
+  
+  # find out the weights
+  fit.w <- matrix(1,nrow=J,ncol = J) 
+  fit.w[,1]=0
+  fit.w=pkg.env$t2c(fit.w)
+  fit.w[is.na(fit.w)]=0
   
   tr <- list(
     cumulative.payments.triangle = cumulative.payments.triangle,
     occurrance = occurrance,
     exposure = exposure,
+    fit.w=fit.w,
     incremental.payments.triangle = incrementals,
     J=J,
-    diagonal=pkg.env$t2c(cumulative.payments.triangle)[,J]
+    diagonal=pkg.env$t2c(cumulative.payments.triangle)[,J],
+    k=k
   )
   
   ## Set the name for the class
@@ -55,6 +65,5 @@ RtTriangle <- function(cumulative.payments.triangle)
   tr
   
 }
-
 
 

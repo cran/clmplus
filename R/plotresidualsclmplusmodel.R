@@ -120,7 +120,7 @@ plotresiduals.clmplusmodel <- function(clmplusmodel,
   }
 
   
-  p_hm <- ggplot2::ggplot(data=longdf.no.0, ggplot2::aes(x=as.integer(dev), y=as.integer(origin))) + 
+  p_hm <- ggplot2::ggplot(data=longdf.no.0, ggplot2::aes(x=as.integer(dev)-1, y=as.integer(origin)-1)) + 
     ggplot2::geom_tile(ggplot2::aes(fill = value))+ggplot2::scale_y_reverse()+
     ggplot2::scale_fill_gradient2(name="model residuals", 
                          low="royalblue", 
