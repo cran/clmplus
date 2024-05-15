@@ -2,22 +2,22 @@
 #'
 #' This function allows to define the behavior of the triangle payments.
 #' 
-#' @param x RtTriangle to be plotted.
+#' @param x AggregateDataPP to be plotted.
 #' @param ... Arguments to be passed to plot.
 #' @examples
 #' data(sifa.mtpl)
-#' sifa.mtpl.rtt <- RtTriangle(cumulative.payments.triangle=sifa.mtpl)
-#' plot(sifa.mtpl.rtt)
+#' sifa.mtpl.pp <- AggregateDataPP(cumulative.payments.triangle=sifa.mtpl)
+#' plot(sifa.mtpl.pp)
 #' 
 #' @return No return value, plots the run-off triangle cumulative payments and incremental payments.
 #' 
 #' @references 
-#' 
-#' Hiabu, Munir. “On the relationship between classical chain ladder and granular reserving.” 
-#' Scandinavian Actuarial Journal 2017 (2017): 708 - 729.
+#' Pittarello, Gabriele, Munir Hiabu, and Andrés M. Villegas. "Replicating and extending chain ladder 
+#' via an age-period-cohort structure on the claim development in a run-off triangle." arXiv preprint arXiv:2301.03858 (2023).
+#'  
 #' 
 #' @export
-plot.RtTriangle <- function(x, ...){
+plot.AggregateDataPP <- function(x, ...){
   
   temp=x$incremental.payments.triangle
   colnames(temp)<-seq(0,dim(temp)[1]-1)

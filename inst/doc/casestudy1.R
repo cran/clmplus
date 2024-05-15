@@ -68,12 +68,48 @@ t2c(dataset)
 
 ## ----rtt data, include=FALSE--------------------------------------------------
 library(clmplus)
-rtt <- RtTriangle(cumulative.payments.triangle = dataset)
+rtt <- AggregateDataPP(cumulative.payments.triangle = dataset)
 
 
 ## ----amodel, message=FALSE, warning=FALSE-------------------------------------
-a.model=clmplus(RtTriangle =  rtt, 
+a.model.fit=clmplus(AggregateDataPP =  rtt, 
              hazard.model = "a")
+
+
+## ----amodeloutput1, message=FALSE---------------------------------------------
+
+a.model.fit$fitted_development_factors
+
+
+## ----amodeloutput2, message=FALSE---------------------------------------------
+
+a.model.fit$fitted_effects
+
+
+## ----amodelpredict, message=FALSE---------------------------------------------
+
+a.model <- predict(a.model.fit)
+
+
+## ----dfpredicted, message=FALSE-----------------------------------------------
+
+a.model$development_factors_predicted
+
+
+## ----ltpredicted, message=FALSE-----------------------------------------------
+
+a.model$lower_triangle
+
+
+## ----ftpredicted, message=FALSE-----------------------------------------------
+
+a.model$full_triangle
+
+
+## ----predictionsoneyear, message=FALSE----------------------------------------
+
+a.model.2 <- predict(a.model.fit,
+                     forecasting_horizon=1)
 
 
 ## ----mack, message=FALSE, warning=FALSE---------------------------------------
@@ -83,7 +119,7 @@ diagonal=rev(t2c(mck.chl$FullTriangle)[,dim(mck.chl$FullTriangle)[2]])
 
 ## ----clm replicated-----------------------------------------------------------
 data.frame(ultimate.cost.mack=ultimate.chl,
-           ultimate.cost.clmplus=a.model$ultimate.cost,
+           ultimate.cost.clmplus=a.model$ultimate_cost,
            reserve.mack=ultimate.chl-diagonal,
            reserve.clmplus=a.model$reserve
            )
@@ -118,20 +154,23 @@ data.frame(reserve.mack=ultimate.chl-diagonal,
 
 
 ## ----fitted ax amodel---------------------------------------------------------
-a.model$model.fit$ax
+a.model.fit$fitted_effects
+
 
 ## ----plot effects ax, message=FALSE, warning=FALSE----------------------------
 plot(a.model)
 
 ## ----amodel residuals---------------------------------------------------------
 #make it triangular
-plotresiduals(a.model)
+plot(a.model.fit)
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
-ac.model <- clmplus(rtt, 
-                    hazard.model="ac",
+ac.model.fit <- clmplus(rtt, 
+                    hazard.model="ac")
+
+ac.model <- predict(ac.model.fit,
                     gk.fc.model='a')
-plotresiduals(ac.model)
+plot(ac.model.fit)
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
 
@@ -139,22 +178,26 @@ plot(ac.model)
 
 
 ## ----apapc models, message=FALSE, warning=FALSE-------------------------------
-ap.model = clmplus(rtt,
-                   hazard.model = "ap", 
+ap.model.fit = clmplus(rtt,
+                   hazard.model = "ap")
+
+ap.model<-predict(ap.model.fit, 
                    ckj.fc.model='a',
                    ckj.order = c(0,1,0))
 
-apc.model = clmplus(rtt,hazard.model = "apc", 
+apc.model.fit = clmplus(rtt,hazard.model = "apc")
+
+apc.model<-predict(apc.model.fit, 
                    gk.fc.model='a', 
                    ckj.fc.model='a',
                    gk.order = c(1,1,0),
                    ckj.order = c(0,1,0))
 
 ## ----residuals apmodel--------------------------------------------------------
-plotresiduals(ap.model)
+plot(ap.model.fit)
 
 ## ----residuals apcmodel-------------------------------------------------------
-plotresiduals(apc.model)
+plot(apc.model.fit)
 
 ## ----apc effects, message=FALSE, warning=FALSE--------------------------------
 plot(apc.model)

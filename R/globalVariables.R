@@ -1,3 +1,7 @@
+#' @importFrom forecast Arima
+#' @importFrom forecast forecast
+
+
 # Create environment ----
 pkg.env <- new.env()
 
@@ -468,6 +472,7 @@ pkg.env$fcst <- function(object,
                          gk.order=c(1,1,0),
                          ckj.order=c(0,1,0)){
   
+  
   J=dim(object$Dxt)[2]
   
   rates=array(.0,dim=c(J,J))
@@ -489,10 +494,10 @@ pkg.env$fcst <- function(object,
     
     if(gk.fc.model=='a'){
       
-      gc.model <- forecast::Arima(object$gc[1:gc.nNA], 
+      gc.model <- Arima(object$gc[1:gc.nNA], 
                                   order = gk.order, 
                                   include.constant = T)
-      gc.f <- forecast::forecast(gc.model,h=(length(object$cohorts)-gc.nNA))
+      gc.f <- forecast(gc.model,h=(length(object$cohorts)-gc.nNA))
       
       
     }else{
@@ -578,10 +583,131 @@ pkg.env$fcst <- function(object,
 }
 
 
+pkg.env$create_lower_triangle <- function(lt){
+  
+  J <- dim(lt)[1]
+  J.stop <- dim(lt)[2]
+  out <- array(NA,c(J,J))
+  
+  for(age in 1:J){
+    
+    for(calendar in 1:J.stop){
+      
+      tmp.ix <- J+calendar
+      if(tmp.ix-age+1<=J & age<=J){
+      out[tmp.ix-age+1,age] <- lt[age,calendar]}
+      
+      
+    }
+    
+  }
+  
+  return(out)
+  
+  
+}
+
+pkg.env$create_full_triangle <- function(cumulative.payments.triangle, lt){
+  
+  J <- dim(lt)[1]
+  J.stop <- dim(lt)[2]
+  out <- cumulative.payments.triangle
+  
+  for(age in 1:J){
+    
+    for(calendar in 1:J.stop){
+      
+      tmp.ix <- J+calendar
+      if(tmp.ix-age+1<=J & age<=J){
+        out[tmp.ix-age+1,age] <- lt[age,calendar]}
+      
+      
+    }
+    
+  }
+  
+  return(out)
+  
+  
+}
 
 
+pkg.env$find.development.factors <- function(J,
+                                             age.eff,
+                                             period.eff,
+                                             cohort.eff,
+                                             eta){
+
+  # Function that finds the development factors on the upper triangle.
+  
+  out <- array(NA,dim=c(J,J))
+  
+  ax <- c(NA,age.eff[!is.na(age.eff)])
+  
+  if(!is.null(cohort.eff)){
+   gc <-  c(cohort.eff[!is.na(cohort.eff)],NA) #last cohort effect will be extrapolated
+   
+   
+  }else{gc<-rep(0,J)}
+  
+  if(!is.null(period.eff)){
+    
+    kt <-  c(NA,period.eff[!is.na(period.eff)]) #the first period is disregarded
+    
+    
+  }else{kt<-rep(0,J)}
+  
+  
+  for(i in 1:J){
+    for(j in 1:J){
+      
+      if((i+j-1)<=J){out[i,j] <- ax[j]+gc[i]+kt[i+j-1]}
+      
+    }
+    
+  }
+  
+  out <- (1+(1-eta)*exp(out))/(1-(eta*exp(out)))
+  
+  return(out)
+  
+  }
 
 
-
-
+pkg.env$find.fitted.effects <- function(J,
+                                       age.eff,
+                                       period.eff,
+                                       cohort.eff,
+                                       effect_log_scale){
+  
+  # Function that finds the fitted effects.
+  
+  ax <- c(NA,age.eff[!is.na(age.eff)])
+  names(ax) <- c(0:(length(ax)-1))
+  
+  if(!is.null(cohort.eff)){
+    gc <-  c(cohort.eff[!is.na(cohort.eff)],NA) #last cohort effect will be extrapolated
+    names(gc) <- c(0:(length(gc)-1))
+    
+  }else{gc<-NULL}
+  
+  if(!is.null(period.eff)){
+    
+    kt <-  c(NA,period.eff[!is.na(period.eff)]) #the first period is disregarded
+    names(kt) <- c(0:(length(kt)-1))
+    
+  }else{kt<-NULL}
+  
+  out <- list(
+    fitted_development_effect= ax,
+    fitted_calendar_effect=kt,
+    fitted_accident_effect= gc
+    )
+  
+  if(effect_log_scale==FALSE){out<-lapply(out,exp)}
+  
+  return(out)
+  
+  
+  }
 
